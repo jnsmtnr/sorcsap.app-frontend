@@ -1,6 +1,10 @@
+import ComingSoon from './components/ComingSoon.js'
+
 function App() {
   return (
-    <div className="font-sans">Hello there</div>
+    <div className="flex justify-center items-center h-screen">
+      <ComingSoon />
+    </div>
   );
 }
 
