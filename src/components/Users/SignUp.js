@@ -1,14 +1,19 @@
 import { useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { validateEmail } from '../../utils/validate.js'
 
-function SignUp() {
+function SignUp(props) {
+    const history = useHistory()
+
     const email = useRef()
     const password = useRef()
     const passwordAgain = useRef()
     const [invalidEmail, setInvalidEmail] = useState(false)
     const [invalidLength, setInvalidLength] = useState(false)
-    const [notEqual, setNotEqual] = useState(false) 
+    const [notEqual, setNotEqual] = useState(false)
+
+    const [hasError, setHasError] = useState(false)
 
     function handleSubmit(event) {
         event.preventDefault()
@@ -32,7 +37,27 @@ function SignUp() {
             return
         }
 
-        console.log('sign up')
+        fetch('http://localhost:8000/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email.current.value,
+        password: password.current.value
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .then(data => {
+        props.onSuccesfulSignUp(data.token)
+        history.replace('/test')
+      })
+      .catch(() => setHasError(true))
     }
 
     return (
@@ -66,6 +91,7 @@ function SignUp() {
             >
                 Regisztráció
             </button>
+            {hasError && <span className="text-red-400 text-sm text-center">Valami hiba történt, próbálja meg újra később</span>}
         </form>
     )
 }
