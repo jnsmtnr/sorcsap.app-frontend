@@ -1,12 +1,36 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+
+import { validateEmail } from '../../utils/validate.js'
 
 function SignUp() {
     const email = useRef()
     const password = useRef()
     const passwordAgain = useRef()
+    const [invalidEmail, setInvalidEmail] = useState(false)
+    const [invalidLength, setInvalidLength] = useState(false)
+    const [notEqual, setNotEqual] = useState(false) 
 
     function handleSubmit(event) {
         event.preventDefault()
+
+        setInvalidEmail(false)
+        setInvalidLength(false)
+        setNotEqual(false)
+
+        if (!validateEmail(email.current.value)) {
+            setInvalidEmail(true)
+            return
+        }
+
+        if (password.current.value.length < 8) {
+            setInvalidLength(true)
+            return
+        }
+
+        if (password.current.value !== passwordAgain.current.value) {
+            setNotEqual(true)
+            return
+        }
 
         console.log('sign up')
     }
@@ -19,7 +43,7 @@ function SignUp() {
                 className="border p-1"
                 ref={email}
             />
-            {true && <span className="text-red-400 text-sm">Rossz e-mail cím</span>}
+            {invalidEmail && <span className="text-red-400 text-sm">Rossz e-mail cím</span>}
             <label htmlFor="password">Jelszó</label>
             <input
                 id="password"
@@ -27,7 +51,7 @@ function SignUp() {
                 className="border p-1"
                 ref={password}
             />
-            {true && <span className="text-red-400 text-sm">Legalább 8 karakter hosszúnak kell lennie!</span>}
+            {invalidLength && <span className="text-red-400 text-sm">Legalább 8 karakter hosszúnak kell lennie!</span>}
             <label htmlFor="password-again">Jelszó újra</label>
             <input
                 id="password-again"
@@ -35,7 +59,7 @@ function SignUp() {
                 className="border p-1"
                 ref={passwordAgain}
             />
-            {true && <span className="text-red-400 text-sm">A két jelszó nem egyezik meg!</span>}
+            {notEqual && <span className="text-red-400 text-sm">A két jelszó nem egyezik meg!</span>}
             <button
                 type="submit"
                 className="p-1 bg-yellow-200"
