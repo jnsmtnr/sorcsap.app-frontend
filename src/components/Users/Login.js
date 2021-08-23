@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
+import { validateEmail } from '../../utils/validate.js'
+
 function Login(props) {
   const email = useRef()
   const password = useRef()
@@ -9,18 +11,13 @@ function Login(props) {
 
   const history = useHistory()
 
-  function validateEmail() {
-    const enteredEmail = email.current.value
-    return enteredEmail.includes('.') && enteredEmail.includes('@')
-  }
-
   function handleSubmit(event) {
     event.preventDefault()
 
     setHasError(false)
     setInvalidEmail(false)
 
-    if (!validateEmail()) {
+    if (!validateEmail(email.current.value)) {
       setInvalidEmail(true)
       return
     }
