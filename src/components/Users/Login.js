@@ -1,15 +1,17 @@
 import { useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 import { validateEmail } from '../../utils/validate.js'
 
-function Login(props) {
+function Login() {
   const email = useRef()
   const password = useRef()
   const [hasError, setHasError] = useState(false)
   const [invalidEmail, setInvalidEmail] = useState(false)
 
   const history = useHistory()
+  const dispatch = useDispatch()
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -39,7 +41,13 @@ function Login(props) {
         return response.json()
       })
       .then(data => {
-        props.onSuccesfulLogin(data.token)
+        dispatch({ 
+          type: 'set-user', 
+          payload: { 
+            token: data.token, 
+            email: email.current.value 
+          } 
+        })
         history.replace('/test')
       })
       .catch(() => setHasError(true))

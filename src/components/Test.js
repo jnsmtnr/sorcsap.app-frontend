@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
-function Test(props) {
+function Test() {
     const [loggedIn, setLoggedIn] = useState(false)
+    const token = useSelector(state => state.token)
 
     useEffect(() => {
         fetch('http://localhost:8000/test', {
             headers: {
-                Authorization: `Bearer ${props.token}`
+                Authorization: `Bearer ${token}`
             }
         })
         .then(response => {
@@ -17,7 +19,7 @@ function Test(props) {
                 setLoggedIn(false)
             }
         })
-    }, [props])
+    }, [token])
 
     return (
         <div>
