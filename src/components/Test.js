@@ -22,7 +22,7 @@ function Test() {
 	}, [token])
 
 	return (
-		<div>
+		<div className="text-center">
 			<div>{loggedIn ? 'Bejelentkezve' : 'Nincs bejelentkezve'}</div>
 			{email && <div>{email}</div>}
 		</div>
