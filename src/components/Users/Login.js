@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import { validateEmail } from '../../utils/validate.js'
+import api from '../../api/'
 
 function Login() {
   const email = useRef()
@@ -24,29 +25,17 @@ function Login() {
       return
     }
 
-    fetch('http://localhost:8000/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email.current.value,
-        password: password.current.value
-      }),
+    api.post('/users/login', {
+      email: email.current.value,
+      password: password.current.value
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response.json()
-      })
-      .then(data => {
-        dispatch({ 
-          type: 'set-user', 
-          payload: { 
-            token: data.token, 
-            email: email.current.value 
-          } 
+        dispatch({
+          type: 'set-user',
+          payload: {
+            token: response.data.token,
+            email: email.current.value
+          }
         })
         history.replace('/test')
       })
