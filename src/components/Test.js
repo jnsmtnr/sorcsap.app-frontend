@@ -5,18 +5,16 @@ import api from '../api/'
 
 function Test() {
 	const [loggedIn, setLoggedIn] = useState(false)
-	const [email, setEmail] = useState(null)
 	const token = useSelector(state => state.token)
 
 	useEffect(() => {
-		api.get('/test', {
+		api.get('/beers', {
 			headers: {
 				Authorization: `Bearer ${token}`
 			}
 		})
-			.then(response => {
+			.then(() => {
 				setLoggedIn(true)
-				setEmail(response.data)
 			})
 			.catch(() => setLoggedIn(false))
 	}, [token])
@@ -24,7 +22,6 @@ function Test() {
 	return (
 		<div className="text-center">
 			<div>{loggedIn ? 'Bejelentkezve' : 'Nincs bejelentkezve'}</div>
-			{email && <div>{email}</div>}
 		</div>
 	)
 }

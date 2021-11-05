@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import { validateEmail } from '../../utils/validate.js'
 import api from '../../api/'
 
 function SignUp() {
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const email = useRef()
@@ -52,7 +52,7 @@ function SignUp() {
             email: email.current.value
           }
         })
-        history.replace('/test')
+        navigate('/test', { replace: true })
       })
       .catch(() => setHasError(true))
   }
