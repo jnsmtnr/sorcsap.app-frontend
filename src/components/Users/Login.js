@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 import { validateEmail } from '../../utils/validate.js'
@@ -11,7 +11,7 @@ function Login() {
   const [hasError, setHasError] = useState(false)
   const [invalidEmail, setInvalidEmail] = useState(false)
 
-  const history = useHistory()
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   function handleSubmit(event) {
@@ -37,7 +37,7 @@ function Login() {
             email: email.current.value
           }
         })
-        history.replace('/test')
+        navigate('/test', { replace: true })
       })
       .catch(() => setHasError(true))
   }
