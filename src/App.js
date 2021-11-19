@@ -14,7 +14,7 @@ function App() {
         <Route path="test" element={<Test />} />
       </Routes>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
