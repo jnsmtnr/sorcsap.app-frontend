@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import { validateEmail } from '../../utils/validate.js'
 import api from '../../api/'
+import { setLoginData } from '../../utils/loginData.js'
 
 function Login() {
   const email = useRef()
@@ -38,11 +39,10 @@ function Login() {
           }
         })
         
-        localStorage.setItem('login-data', JSON.stringify({ 
+        setLoginData({
           token: response.data.token, 
           email: email.current.value,
-          expiresAt: new Date().getTime() + 3600000
-        }))
+        })
 
         navigate('/', { replace: true })
       })
