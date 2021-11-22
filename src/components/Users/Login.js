@@ -37,7 +37,14 @@ function Login() {
             email: email.current.value
           }
         })
-        navigate('/test', { replace: true })
+        
+        localStorage.setItem('login-data', JSON.stringify({ 
+          token: response.data.token, 
+          email: email.current.value,
+          expiresAt: new Date().getTime() + 3600000
+        }))
+
+        navigate('/', { replace: true })
       })
       .catch(() => setHasError(true))
   }
