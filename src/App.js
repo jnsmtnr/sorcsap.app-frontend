@@ -1,17 +1,36 @@
+import { useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom'
-import ComingSoon from './components/ComingSoon.js'
+import { useSelector, useDispatch } from 'react-redux'
+import ComingSoon from './pages/ComingSoon.js'
 import Login from './components/Users/Login.js'
 import SignUp from './components/Users/SignUp.js'
-import Test from './components/Test.js'
+import Dashboard from './pages/Dashboard.js'
 
 function App() {
+  const dispatch = useDispatch()
+  const token = useSelector(state => state.token)
+
+  useEffect(() => {
+    const loginData = JSON.parse(localStorage.getItem('login-data'))
+
+    if (loginData) {
+      dispatch({
+        type: 'set-user',
+        payload: {
+          email: loginData.email,
+          token: loginData.token
+        }
+      })
+    }
+  }, [dispatch])
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <Routes>
-        <Route path="/*" element={<ComingSoon />} />
+        {!token && <Route path="/*" element={<ComingSoon />} />}
+        {token && <Route path="/" element={<Dashboard />} />}
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
-        <Route path="test" element={<Test />} />
       </Routes>
     </div>
   )
