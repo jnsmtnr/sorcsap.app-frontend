@@ -1,19 +1,22 @@
 import { useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+
 import ComingSoon from './pages/ComingSoon.js'
 import Login from './components/Users/Login.js'
 import SignUp from './components/Users/SignUp.js'
 import Dashboard from './pages/Dashboard.js'
+
+import { getLoginData } from './utils/loginData'
 
 function App() {
   const dispatch = useDispatch()
   const token = useSelector(state => state.token)
 
   useEffect(() => {
-    const loginData = JSON.parse(localStorage.getItem('login-data'))
+    const loginData = getLoginData()
 
-    if (loginData) {
+    if (loginData && loginData.expiresAt > new Date().getTime()) {
       dispatch({
         type: 'set-user',
         payload: {
