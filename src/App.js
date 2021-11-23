@@ -7,6 +7,7 @@ import Login from './components/Users/Login.js'
 import SignUp from './components/Users/SignUp.js'
 import Dashboard from './pages/Dashboard.js'
 import RateBeer from './pages/RateBeer.js'
+import MyRatings from './pages/MyRatings.js'
 
 import { getLoginData } from './utils/loginData'
 import api from './api'
@@ -45,6 +46,7 @@ function App() {
         <Route path="signup" element={<SignUp />} />
         {token && <Route path="/" element={<Dashboard />} />}
         {token && <Route path="rate-beer" element={<RateBeer />} />}
+        {token && <Route path="my-ratings" element={<MyRatings />} />}
       </Routes>
     </div>
   )
