@@ -6,8 +6,10 @@ import ComingSoon from './pages/ComingSoon.js'
 import Login from './components/Users/Login.js'
 import SignUp from './components/Users/SignUp.js'
 import Dashboard from './pages/Dashboard.js'
+import RateBeer from './pages/RateBeer.js'
 
 import { getLoginData } from './utils/loginData'
+import api from './api'
 
 function App() {
   const dispatch = useDispatch()
@@ -27,13 +29,22 @@ function App() {
     }
   }, [dispatch])
 
+  useEffect(() => {
+    if (token) {
+      api.get('/beers')
+          .then((response) => dispatch({ type: 'set-beers', payload: { beers: response.data } }))
+          .catch(console.log)
+    }
+}, [token, dispatch])
+
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <Routes>
         {!token && <Route path="/*" element={<ComingSoon />} />}
-        {token && <Route path="/" element={<Dashboard />} />}
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
+        {token && <Route path="/" element={<Dashboard />} />}
+        {token && <Route path="rate-beer" element={<RateBeer />} />}
       </Routes>
     </div>
   )
