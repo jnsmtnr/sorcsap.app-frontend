@@ -61,21 +61,21 @@ export default function RateBeer() {
     }
 
     return (
-        <form onSubmit={onSubmitHandler} className="space-y-2">
+        <form onSubmit={onSubmitHandler} className="space-y-2 p-2 bg-white w-64">
             <div>
-                <select value={selectedBrewery} onChange={onBreweryChange} className="w-full p-1">
+                <select value={selectedBrewery} onChange={onBreweryChange} className="w-full p-1 cursor-pointer border">
                     <option value="" hidden>Válassz egy főzdét!</option>
                     {breweries.map(brewery => <option value={brewery} key={brewery}>{brewery}</option>)}
                 </select>
             </div>
             <div>
-                <select value={selectedBeer} onChange={onBeerChange} className="w-full p-1">
+                <select value={selectedBeer} onChange={onBeerChange} className="w-full p-1 cursor-pointer border">
                     <option value="" hidden>Válassz egy sört!</option>
                     {beers.map(beer => <option value={beer} key={beer}>{beer}</option>)}
                 </select>
             </div>
             <div>
-                <select value={rating} onChange={onRatingChange} className="w-full p-1">
+                <select value={rating} onChange={onRatingChange} className="w-full p-1 cursor-pointer border">
                     <option value="" hidden>Értékelés</option>
                     {[1, 2, 3, 4, 5].map(rating => <option value={rating} key={rating}>{rating}</option>)}
                 </select>
