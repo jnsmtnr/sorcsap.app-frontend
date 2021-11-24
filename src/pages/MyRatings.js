@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 
 import Rating from "../components/MyRatings/Rating.js"
 import EditRating from "../components/MyRatings/EditRating.js"
+import DeleteRating from "../components/MyRatings/DeleteRating.js"
 
 import api from "../api"
 
@@ -42,6 +43,12 @@ export default function MyRatings() {
             .catch(console.log)
     }
 
+    function onDelete(id) {
+        api.delete('/ratings/' + id)
+            .then(loadRatings)
+            .catch(console.log)
+    }
+
     return (
         <div className="p-2 bg-white w-full sm:w-auto">
             <table className="w-full">
@@ -61,7 +68,9 @@ export default function MyRatings() {
                                 <td className="p-2">{beer.brewery}</td>
                                 <td className="p-2">{beer.type}</td>
                                 <td className="p-2">{beer.alc}%</td>
-                                <td></td>
+                                <td className="p-2 text-black">
+                                    <DeleteRating ratingId={beer.id} onDelete={onDelete} />
+                                </td>
                             </tr>
                         </React.Fragment>
                     ))}
