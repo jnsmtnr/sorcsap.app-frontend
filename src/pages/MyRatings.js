@@ -25,13 +25,25 @@ export default function MyRatings() {
 
     const beers = ratings
         .map(rating => {
-            const beer = allBeers.find(beer => beer._id === rating.beerId)
+            if (rating.beerId) {
+                const beer = allBeers.find(beer => beer._id === rating.beerId)
+    
+                return {
+                    ...beer,
+                    rating: rating.rating,
+                    id: rating._id
+                }
+            }
 
             return {
-                ...beer,
+                name: rating.name,
+                type: rating.type,
+                alc: rating.alc,
+                brewery: rating.brewery,
                 rating: rating.rating,
                 id: rating._id
             }
+
         })
         .sort((a, b) => a.name > b.name ? 1 : -1)
 
