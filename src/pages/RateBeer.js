@@ -1,18 +1,14 @@
-import { useState } from 'react'
 import { useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
+import RateBeerForm from '../components/RateBeer/RateBeerForm'
 
 export default function RateBeer() {
     const navigate = useNavigate()
 
-    const allBeers = useSelector(state => state.beers)
+    const beers = useSelector(state => state.beers)
 
-    const [selectedBrewery, setSelectedBrewery] = useState('')
-    const [selectedBeer, setSelectedBeer] = useState('')
-    const [rating, setRating] = useState('')
-
-    const breweries = allBeers
+    const breweries = beers
         .reduce((breweries, beer) => {
             if (!breweries.includes(beer.brewery)) {
                 breweries.push(beer.brewery)
@@ -22,38 +18,10 @@ export default function RateBeer() {
         }, [])
         .sort()
 
-    const beers = allBeers
-        .filter(beer => {
-            if (selectedBrewery) {
-                return beer.brewery === selectedBrewery
-            }
-            return true
-        })
-        .map(beer => beer.name)
-        .sort()
+    function onSubmitHandler(payload) {
+        const url = payload.beerId ? '/ratings' : '/ratings/new-beer' 
 
-    function onBreweryChange(event) {
-        setSelectedBrewery(event.target.value)
-        setSelectedBeer('')
-    }
-
-    function onBeerChange(event) {
-        setSelectedBeer(event.target.value)
-    }
-
-    function onRatingChange(event) {
-        setRating(event.target.value)
-    }
-
-    function onSubmitHandler(event) {
-        event.preventDefault()
-
-        const beer = allBeers.find(beer => beer.name === selectedBeer)
-
-        api.post('/ratings', {
-            beerId: beer._id,
-            rating: +rating
-        })
+        api.post(url, payload)
             .then(() => {
                 navigate('/my-ratings')
             })
@@ -61,26 +29,6 @@ export default function RateBeer() {
     }
 
     return (
-        <form onSubmit={onSubmitHandler} className="space-y-2 p-2 bg-white w-64">
-            <div>
-                <select value={selectedBrewery} onChange={onBreweryChange} className="w-full p-1 cursor-pointer border">
-                    <option value="" hidden>Válassz egy főzdét!</option>
-                    {breweries.map(brewery => <option value={brewery} key={brewery}>{brewery}</option>)}
-                </select>
-            </div>
-            <div>
-                <select value={selectedBeer} onChange={onBeerChange} className="w-full p-1 cursor-pointer border">
-                    <option value="" hidden>Válassz egy sört!</option>
-                    {beers.map(beer => <option value={beer} key={beer}>{beer}</option>)}
-                </select>
-            </div>
-            <div>
-                <select value={rating} onChange={onRatingChange} className="w-full p-1 cursor-pointer border">
-                    <option value="" hidden>Értékelés</option>
-                    {[1, 2, 3, 4, 5].map(rating => <option value={rating} key={rating}>{rating}</option>)}
-                </select>
-            </div>
-            <button type="submit" className="w-full p-1 bg-yellow-200">Küldés</button>
-        </form>
+        <RateBeerForm beers={beers} breweries={breweries} onSubmit={onSubmitHandler} />
     )
 }
