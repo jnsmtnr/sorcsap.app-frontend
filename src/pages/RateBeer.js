@@ -19,7 +19,7 @@ export default function RateBeer() {
         .sort()
 
     function onSubmitHandler(payload) {
-        const url = payload.beerId ? '/ratings' : '/ratings/new-beer' 
+        const url = payload.beerId ? '/ratings' : '/ratings/new-beers' 
 
         api.post(url, payload)
             .then(() => {
