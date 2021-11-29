@@ -92,7 +92,7 @@ export default function RateBeerForm(props) {
                 <label className="block" htmlFor="type">Típus</label>
                 <input className="w-full border p-1" value={newBeer.type} id="type" onChange={onChangeHandler} />
                 <label className="block" htmlFor="alc">Alkohol %</label>
-                <input className="w-full border p-1" type="number" value={newBeer.alc} id="alc" onChange={onChangeHandler} />
+                <input className="w-full border p-1" type="number" step="any" value={newBeer.alc} id="alc" onChange={onChangeHandler} />
             </React.Fragment>}
             <select value={rating} onChange={onRatingChange} className="w-full px-1 py-1.5 cursor-pointer border">
                 <option value="" hidden>Értékelés</option>
