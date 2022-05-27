@@ -23,7 +23,7 @@ export default function RateBeer() {
 
         api.post(url, payload)
             .then(() => {
-                navigate('/my-ratings')
+                navigate('/my-ratings', { replace: true })
             })
             .catch((error) => console.log(error))
     }
