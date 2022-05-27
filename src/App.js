@@ -2,7 +2,7 @@ import { useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
-import ComingSoon from './pages/ComingSoon.js'
+import Hello from './pages/Hello.js'
 import Login from './components/Users/Login.js'
 import SignUp from './components/Users/SignUp.js'
 import Dashboard from './pages/Dashboard.js'
@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <Routes>
-        {!token && <Route path="/*" element={<ComingSoon />} />}
+        {!token && <Route path="/*" element={<Hello />} />}
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
         {token && <Route path="/" element={<Dashboard />} />}
