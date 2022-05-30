@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { useSelector } from "react-redux"
 import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import RateBeerForm from '../components/RateBeer/RateBeerForm'
+import ExistingRatingModel from "../components/RateBeer/ExistingRatingModal"
 
 export default function RateBeer() {
     const navigate = useNavigate()
+    const [existingRating, setExistingRating] = useState(null)
+    const [newRating, setNewRating] = useState(null)
 
     const beers = useSelector(state => state.beers)
 
@@ -25,10 +29,41 @@ export default function RateBeer() {
             .then(() => {
                 navigate('/my-ratings', { replace: true })
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                if (error.response && error.response.status === 409) {
+                    setExistingRating({ rating: error.response.data.rating, id: error.response.data.id })
+                    setNewRating(payload.rating)
+                } else {
+                    console.log(error.message)
+                }
+            })
+    }
+
+    function onSaveHandler() {
+        api.patch('/ratings/' + existingRating.id, {
+            rating: newRating
+        }).then(() => {
+            navigate('/my-ratings', { replace: true })
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
+
+    function onCancelHandler() {
+        setExistingRating(null)
+        setNewRating(null)
     }
 
     return (
-        <RateBeerForm beers={beers} breweries={breweries} onSubmit={onSubmitHandler} />
+        <>
+            <RateBeerForm beers={beers} breweries={breweries} onSubmit={onSubmitHandler} />
+            {existingRating && (
+                <ExistingRatingModel 
+                    rating={existingRating.rating}
+                    onSave={onSaveHandler}
+                    onCancel={onCancelHandler} 
+                />
+            )}
+        </>
     )
 }
