@@ -10,7 +10,7 @@ export default function RateBeer() {
     const [existingRating, setExistingRating] = useState(null)
     const [newRating, setNewRating] = useState(null)
 
-    const beers = useSelector(state => state.beers)
+    const beers = useSelector(state => state.beers.beers)
 
     const breweries = beers
         .reduce((breweries, beer) => {

@@ -8,7 +8,7 @@ import DeleteRating from "../components/MyRatings/DeleteRating.js"
 import api from "../api"
 
 export default function MyRatings() {
-    const allBeers = useSelector(state => state.beers)
+    const allBeers = useSelector(state => state.beers.beers)
     const [ratings, setRatings] = useState([])
 
     function loadRatings() {
