@@ -6,6 +6,8 @@ import { validateEmail } from '../../utils/validate.js'
 import api from '../../api/'
 import { setLoginData } from '../../utils/loginData.js'
 
+import { setUser } from '../../store/user'
+
 function SignUp() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,13 +48,10 @@ function SignUp() {
       password: password.current.value
     })
       .then(response => {
-        dispatch({
-          type: 'set-user',
-          payload: {
+        dispatch(setUser({
             token: response.data.token,
             email: email.current.value
-          }
-        })
+        }))
 
         setLoginData({
           token: response.data.token, 

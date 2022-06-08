@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -12,31 +12,31 @@ import MyRatings from './pages/MyRatings.js'
 import { getLoginData } from './utils/loginData'
 import api from './api'
 
+import { setUser } from './store/user'
+import { setBeers } from './store/beers'
+
 function App() {
   const dispatch = useDispatch()
-  const token = useSelector(state => state.token)
+  const token = useSelector(state => state.user.token)
 
   useEffect(() => {
     const loginData = getLoginData()
 
     if (loginData && loginData.expiresAt > new Date().getTime()) {
-      dispatch({
-        type: 'set-user',
-        payload: {
-          email: loginData.email,
-          token: loginData.token
-        }
-      })
+      dispatch(setUser({
+        email: loginData.email,
+        token: loginData.token
+      }))
     }
   }, [dispatch])
 
   useEffect(() => {
     if (token) {
       api.get('/beers')
-          .then((response) => dispatch({ type: 'set-beers', payload: { beers: response.data } }))
-          .catch(console.log)
+        .then((response) => dispatch(setBeers(response.data)))
+        .catch(console.log)
     }
-}, [token, dispatch])
+  }, [token, dispatch])
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">

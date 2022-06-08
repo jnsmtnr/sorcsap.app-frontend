@@ -6,6 +6,8 @@ import { validateEmail } from '../../utils/validate.js'
 import api from '../../api/'
 import { setLoginData } from '../../utils/loginData.js'
 
+import { setUser } from '../../store/user'
+
 function Login() {
   const email = useRef()
   const password = useRef()
@@ -31,13 +33,10 @@ function Login() {
       password: password.current.value
     })
       .then(response => {
-        dispatch({
-          type: 'set-user',
-          payload: {
-            token: response.data.token,
-            email: email.current.value
-          }
-        })
+        dispatch(setUser({
+          token: response.data.token,
+          email: email.current.value
+        }))
         
         setLoginData({
           token: response.data.token, 
