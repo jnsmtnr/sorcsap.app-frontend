@@ -39,7 +39,7 @@ function App() {
   }, [token, dispatch])
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen">
       <Routes>
         {!token && <Route path="/*" element={<Hello />} />}
         <Route path="login" element={<Login />} />
